@@ -1,0 +1,31 @@
+# Development dependencies for log security analysis app
+# Include production dependencies
+-r requirements.txt
+
+# Testing framework
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+pytest-xdist>=3.3.0  # For parallel test execution
+
+# Code quality and formatting
+black>=23.7.0
+isort>=5.12.0
+flake8>=6.0.0
+mypy>=1.5.0
+
+# Type checking
+types-PyYAML>=6.0.12
+types-requests>=2.31.0
+
+# Documentation
+sphinx>=7.1.0
+sphinx-rtd-theme>=1.3.0
+
+# Development tools
+pre-commit>=3.3.0
+ipython>=8.14.0  # For interactive development
+
+# Coverage reporting
+coverage>=7.2.0
+coverage-badge>=1.1.0

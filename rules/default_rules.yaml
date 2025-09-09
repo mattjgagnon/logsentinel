@@ -1,0 +1,123 @@
+# Default security rules for log analysis
+# These rules provide basic security threat detection
+
+rules:
+  # Authentication and Authorization
+  - id: "failed_login_attempts"
+    name: "Failed Login Attempts"
+    description: "Detects multiple failed login attempts"
+    type: "regex"
+    pattern: "(?i)(failed|invalid|incorrect).*login|authentication.*failed"
+    severity: "medium"
+    enabled: true
+    category: "authentication"
+    
+  - id: "brute_force_attack"
+    name: "Brute Force Attack"
+    description: "Detects potential brute force attacks"
+    type: "threshold"
+    pattern: "failed.*login"
+    threshold: 5
+    time_window: 300  # 5 minutes
+    severity: "high"
+    enabled: true
+    category: "authentication"
+
+  # System Security
+  - id: "privilege_escalation"
+    name: "Privilege Escalation Attempt"
+    description: "Detects privilege escalation attempts"
+    type: "regex"
+    pattern: "(?i)(sudo|su|runas).*failed|privilege.*escalation"
+    severity: "high"
+    enabled: true
+    category: "privilege"
+
+  - id: "unauthorized_access"
+    name: "Unauthorized Access Attempt"
+    description: "Detects unauthorized access attempts"
+    type: "regex"
+    pattern: "(?i)(unauthorized|forbidden|access.*denied)"
+    severity: "medium"
+    enabled: true
+    category: "access"
+
+  # Network Security
+  - id: "port_scan"
+    name: "Port Scan Detection"
+    description: "Detects potential port scanning activity"
+    type: "threshold"
+    pattern: "connection.*refused|port.*closed"
+    threshold: 10
+    time_window: 60  # 1 minute
+    severity: "medium"
+    enabled: true
+    category: "network"
+
+  - id: "suspicious_connections"
+    name: "Suspicious Network Connections"
+    description: "Detects suspicious network connections"
+    type: "regex"
+    pattern: "(?i)(suspicious|malicious|anomalous).*connection"
+    severity: "medium"
+    enabled: true
+    category: "network"
+
+  # Application Security
+  - id: "sql_injection"
+    name: "SQL Injection Attempt"
+    description: "Detects potential SQL injection attempts"
+    type: "regex"
+    pattern: "(?i)(union.*select|drop.*table|insert.*into|delete.*from)"
+    severity: "high"
+    enabled: true
+    category: "injection"
+
+  - id: "xss_attempt"
+    name: "XSS Attack Attempt"
+    description: "Detects potential XSS attack attempts"
+    type: "regex"
+    pattern: "(?i)(<script|javascript:|onload=|onerror=)"
+    severity: "high"
+    enabled: true
+    category: "injection"
+
+  # System Errors
+  - id: "database_errors"
+    name: "Database Connection Errors"
+    description: "Detects database connection failures"
+    type: "regex"
+    pattern: "(?i)(database.*error|connection.*failed|sql.*error)"
+    severity: "medium"
+    enabled: true
+    category: "system"
+
+  - id: "service_failures"
+    name: "Critical Service Failures"
+    description: "Detects critical service failures"
+    type: "regex"
+    pattern: "(?i)(service.*failed|daemon.*died|process.*terminated)"
+    severity: "high"
+    enabled: true
+    category: "system"
+
+# Rule categories for organization
+categories:
+  authentication:
+    description: "Authentication and authorization related threats"
+    color: "#FF6B6B"
+  privilege:
+    description: "Privilege escalation and access control threats"
+    color: "#4ECDC4"
+  access:
+    description: "Unauthorized access attempts"
+    color: "#45B7D1"
+  network:
+    description: "Network security threats"
+    color: "#96CEB4"
+  injection:
+    description: "Code injection and XSS attacks"
+    color: "#FFEAA7"
+  system:
+    description: "System errors and failures"
+    color: "#DDA0DD"

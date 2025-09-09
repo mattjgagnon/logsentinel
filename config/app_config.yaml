@@ -1,0 +1,49 @@
+# Application configuration for LogSentinel
+app:
+  name: "LogSentinel"
+  version: "0.1.0"
+  description: "Advanced log security analysis platform with rules-based threat detection"
+  log_level: "INFO"
+
+# Log parsing configuration
+parsers:
+  default_format: "syslog"
+  supported_formats:
+    - "syslog"
+    - "apache"
+    - "nginx"
+  buffer_size: 8192
+  max_line_length: 4096
+
+# Rules engine configuration
+rules:
+  directory: "/app/rules"
+  auto_reload: true
+  reload_interval: 60  # seconds
+  max_rules: 1000
+  rule_timeout: 30  # seconds
+
+# Alert system configuration
+alerts:
+  handlers:
+    - "console"
+    - "file"
+  output_file: "/app/logs/alerts.log"
+  max_alerts_per_minute: 100
+  alert_retention_days: 30
+
+# File monitoring configuration
+monitoring:
+  watch_directories:
+    - "/app/logs"
+  file_patterns:
+    - "*.log"
+    - "*.log.*"
+  check_interval: 5  # seconds
+  max_file_size: "100MB"
+
+# Performance configuration
+performance:
+  max_concurrent_analyses: 4
+  analysis_timeout: 300  # seconds
+  memory_limit: "512MB"

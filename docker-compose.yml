@@ -1,0 +1,55 @@
+services:
+  # Development service for running tests and development
+  dev:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+      - ./rules:/app/rules
+      - ./config:/app/config
+    environment:
+      - PYTHONPATH=/app/src
+      - LOG_LEVEL=DEBUG
+    command: ["python", "-m", "pytest", "--cov=src/logsentinel", "--cov-report=term-missing", "--cov-report=html", "-v"]
+
+  # Production service for running the application
+  app:
+    build:
+      context: .
+      target: production
+    volumes:
+      - ./logs:/app/logs
+      - ./rules:/app/rules
+      - ./config:/app/config
+    environment:
+      - PYTHONPATH=/app/src
+      - LOG_LEVEL=INFO
+    depends_on:
+      - dev
+    profiles:
+      - production
+
+  # Test service for running tests in isolation
+  test:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app/src
+      - LOG_LEVEL=DEBUG
+    command: ["python", "-m", "pytest", "--cov=src/logsentinel", "--cov-report=term-missing", "--cov-report=html", "--cov-report=xml", "-v"]
+
+  # Coverage service for generating coverage reports
+  coverage:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app/src
+    command: ["python", "-m", "pytest", "--cov=src/logsentinel", "--cov-report=html", "--cov-report=xml", "--cov-fail-under=100"]
